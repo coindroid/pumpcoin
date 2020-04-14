@@ -41,7 +41,7 @@ const Object emptyobj;
 void ThreadRPCServer3(void* parg);
 
 static inline unsigned short GetDefaultRPCPort()
-7
+{
     return GetBoolArg("-testnet", false) ? 17861 : 16861;
 }
 
