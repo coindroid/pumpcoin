@@ -1,3 +1,4 @@
+.idea
 src/*.exe
 src/novacoind
 src/build.h
