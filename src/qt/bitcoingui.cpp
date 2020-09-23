@@ -576,7 +576,7 @@ void BitcoinGUI::paperwalletActionClicked()
 
 void BitcoinGUI::githubsourceActionClicked()
 {
-        QDesktopServices::openUrl(QUrl("https://github.com/freakcoderz/PumpCoin"));
+        QDesktopServices::openUrl(QUrl("https://github.com/coindroid/pumpcoin"));
 }
 
 void BitcoinGUI::whitepaperActionClicked()

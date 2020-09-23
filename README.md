@@ -43,7 +43,7 @@ match the project's coding conventions (see [doc/coding.md](doc/coding.md)) or a
 controversial.
 
 The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/freakcoderz/PumpCoin/tags) are created
+completely stable. [Tags](https://github.com/coindroid/pumpcoin/tags) are created
 regularly to indicate new official, stable release versions of Bitcoin.
 
 ## Testing

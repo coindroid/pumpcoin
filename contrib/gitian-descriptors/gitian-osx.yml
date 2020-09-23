@@ -1,5 +1,5 @@
 ---
-name: "FreakChain-osx-1.0.0"
+name: "PumpCoin-osx-1.0.0"
 enable_cache: true
 suites:
 - "trusty"
@@ -28,8 +28,8 @@ packages:
 - "python-setuptools"
 - "fonts-tuffy"
 remotes:
-- "url": "https://github.com/freakcoderz/FreakChain.git"
-  "dir": "FreakChain"
+- "url": "https://github.com/coindroid/pumpcoin.git"
+  "dir": "PumpCoin"
 files:
 - "MacOSX10.10.sdk.tar.xz"
 script: |
@@ -77,7 +77,7 @@ script: |
   create_global_faketime_wrappers "2000-01-01 12:00:00"
   create_per-host_faketime_wrappers "2000-01-01 12:00:00"
   export PATH=${WRAP_DIR}:${PATH}
-  cd FreakChain
+  cd PumpCoin
   BASEPREFIX=`pwd`/depends
   mkdir -p ${BASEPREFIX}/SDKs
   tar -C ${BASEPREFIX}/SDKs -xf ${BUILD_DIR}/MacOSX10.10.sdk.tar.xz
@@ -94,13 +94,13 @@ script: |
   ./autogen.sh
   CONFIG_SITE=${BASEPREFIX}/`echo "${HOSTS}" | awk '{print $1;}'`/share/config.site ./configure --prefix=/
   make dist
-  SOURCEDIST=`echo FreakChain-*.tar.gz`
+  SOURCEDIST=`echo PumpCoin-*.tar.gz`
   DISTNAME=`echo ${SOURCEDIST} | sed 's/.tar.*//'`
   # Correct tar file order
   mkdir -p temp
   pushd temp
   tar xf ../$SOURCEDIST
-  find FreakChain-* | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ../$SOURCEDIST
+  find PumpCoin-* | sort | tar --no-recursion --mode='u+rw,go+r-w,a+X' --owner=0 --group=0 -c -T - | gzip -9n > ../$SOURCEDIST
   popd
   # Workaround for tarball not building with the bare tag version (prep)
   make -C src obj/build.h
