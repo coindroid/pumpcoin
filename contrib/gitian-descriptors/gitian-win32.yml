@@ -44,7 +44,6 @@ script: |
   find -type f | xargs touch --date="$REFERENCE_DATETIME"
   #
   cd PumpCoin
-  chmod +x leveldb/build_detect_platform
   mkdir -p $OUTDIR/src
   #
   git archive HEAD | tar -x -C $OUTDIR/src
