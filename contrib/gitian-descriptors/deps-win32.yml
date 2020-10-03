@@ -9,7 +9,7 @@ packages:
 - "git-core"
 - "zip"
 - "faketime"
-- "wine"
+- "wine1.7-i386"
 reference_datetime: "2011-01-30 00:00:00"
 remotes: []
 files:
@@ -20,7 +20,6 @@ files:
 - "libpng-1.5.12.tar.gz"
 - "qrencode-3.2.0.tar.bz2"
 script: |
-  #
   export LD_PRELOAD=/usr/lib/faketime/libfaketime.so.1
   export FAKETIME=$REFERENCE_DATETIME
   export TZ=UTC
@@ -40,7 +39,11 @@ script: |
   tar xzf miniupnpc-1.6.tar.gz
   cd miniupnpc-1.6
   sed 's/dllwrap -k --driver-name gcc/$(DLLWRAP) -k --driver-name $(CC)/' -i Makefile.mingw
-  sed 's|wingenminiupnpcstrings $< $@|./wingenminiupnpcstrings $< $@|' -i Makefile.mingw
+  # sed 's|wingenminiupnpcstrings $< $@|./wingenminiupnpcstrings $< $@|' -i Makefile.mingw
+  echo "  sed \'s\|OS_STRING\ \".*\"\|OS_STRING \"Windows\/Mingw32\"\|\'\ \$\<\ \|\ \
+  sed\ \'s\|MINIUPNPC_VERSION_STRING \"\.\*\"\|MINIUPNPC_VERSION_STRING\ \"\$\(shell cat VERSION\)\"\|\'\ \>\ \$\@" > miniupnpc-patch
+  sed -i '71,71d' Makefile.mingw
+  sed -i "71i miniupnpc-patch" Makefile.mingw
   make -f Makefile.mingw DLLWRAP=i586-mingw32msvc-dllwrap CC=i586-mingw32msvc-gcc AR=i586-mingw32msvc-ar
   cd ..
   mv miniupnpc-1.6 miniupnpc
@@ -52,17 +55,17 @@ script: |
   #
   tar xzf libpng-1.5.12.tar.gz
   cd libpng-1.5.12
-  ./configure -disable-shared CC=i586-mingw32msvc-cc AR=i586-mingw32msvc-ar STRIP=i586-mingw32msvc-strip RANLIB=i586-mingw32msvc-ranlib OBJDUMP=i586-mingw32msvc-objdump LD=i586-mingw32msvc-ld LDFLAGS="-L../zlib-1.2.7/" CFLAGS="-I../zlib-1.2.7/"
+  ./configure -disable-shared CC=i586-mingw32msvc-cc AR=i586-mingw32msvc-ar STRIP=i586-mingw32msvc-strip RANLIB=i586-mingw32msvc-ranlib OBJDUMP=i586-mingw32msvc-objdump LD=i586-mingw32msvc-ld LDFLAGS="-L../zlib-1.2.7/" CFLAGS="-I../zlib-1.2.7/" --host=i586-w64-mingw32 
   make $MAKEOPTS
   cd ..
   #
   tar xjf qrencode-3.2.0.tar.bz2
   cd qrencode-3.2.0
-  ./configure CC=i586-mingw32msvc-cc AR=i586-mingw32msvc-ar STRIP=i586-mingw32msvc-strip RANLIB=i586-mingw32msvc-ranlib OBJDUMP=i586-mingw32msvc-objdump LD=i586-mingw32msvc-ld png_LIBS="../libpng-1.5.12/.libs/libpng15.a ../zlib-1.2.7/libz.a" png_CFLAGS="-I../libpng-1.5.12"
+  ./configure CC=i586-mingw32msvc-cc AR=i586-mingw32msvc-ar STRIP=i586-mingw32msvc-strip RANLIB=i586-mingw32msvc-ranlib OBJDUMP=i586-mingw32msvc-objdump LD=i586-mingw32msvc-ld png_LIBS="../libpng-1.5.12/.libs/libpng15.a ../zlib-1.2.7/libz.a" png_CFLAGS="-I../libpng-1.5.12"  --host=i586-w64-mingw32
   make $MAKEOPTS
   cd ..
   #
-  zip -r $OUTDIR/PumpCoin-deps-0.0.1.zip \
+  zip -r $OUTDIR/bitcoin-deps-0.0.1.zip \
     $(ls qrencode-*/{qrencode.h,.libs/libqrencode.{,l}a} | sort) \
     $(ls db-*/build_unix/{libdb_cxx.a,db.h,db_cxx.h,libdb.a,.libs/libdb_cxx-?.?.a} | sort) \
     $(find openssl-* -name '*.a' -o -name '*.h' | sort) \
